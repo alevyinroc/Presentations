@@ -1,0 +1,34 @@
+SQL 101 - your first query
+Database
+	a continer for one or more tables
+Table
+	Like Excel sheet - rows & columns
+	each row independent
+	Tables have relationships between them
+	Use this relationships in queries to connect data
+SQL
+	Standardized language
+	Every vendor has its own dialect but in general moving between isn't onerous
+	English-like - queries are generally readable even w/o a deep understanding of the language
+Basic query parts
+	select
+	from
+	where
+	order by
+Looks easy?
+	It can be
+	Also easy to get invalid results
+	Easy to write an expensive query
+Reason: How SQL Server actually processes the query
+	from (pick your tables)
+	where (rules for picking rows)
+	select (the fields you need)
+	order by
+Selectivity
+	The more you can tell SQL Server about what you're trying to get, the better decisions it can make
+	Know your indexes
+		Like the index in the back of a book
+			Not every word is indexed
+		Words are columns, rows are pages
+		Example: query for one property vs. query all and then filter in Excel
+			It sounds like more work but it can actualy be less
