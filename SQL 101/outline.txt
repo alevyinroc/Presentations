@@ -9,7 +9,21 @@ Table
 SQL
 	Standardized language
 	Every vendor has its own dialect but in general moving between isn't onerous
+		Oracle, Microsoft, Sybase, MySQL, PostgreSQL, SQLite
 	English-like - queries are generally readable even w/o a deep understanding of the language
+Different from other programming languages
+	Declarative vs. imperative
+	Declarative:
+		Tell the engine *what* you want
+		Engine figures out the *how*
+	Imperative:
+		You dictate the how *and* what
+	Same language describes:
+		Manipulating data
+		Storing data
+		Controlling system
+	Operate on sets
+		Not loops
 Basic query parts
 	select
 	from
