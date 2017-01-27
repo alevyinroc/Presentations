@@ -24,6 +24,7 @@ Reason: How SQL Server actually processes the query
 	where (rules for picking rows)
 	select (the fields you need)
 	order by
+		never guaranteed without this!
 Selectivity
 	The more you can tell SQL Server about what you're trying to get, the better decisions it can make
 	Know your indexes
@@ -32,3 +33,6 @@ Selectivity
 		Words are columns, rows are pages
 		Example: query for one property vs. query all and then filter in Excel
 			It sounds like more work but it can actualy be less
+Joins
+	Cross product
+	index/where
