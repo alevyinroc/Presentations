@@ -13,17 +13,18 @@ SQL
 	English-like - queries are generally readable even w/o a deep understanding of the language
 Different from other programming languages
 	Declarative vs. imperative
+	Imperative:
+		You dictate the how *and* what
 	Declarative:
 		Tell the engine *what* you want
 		Engine figures out the *how*
-	Imperative:
-		You dictate the how *and* what
 	Same language describes:
 		Manipulating data
 		Storing data
 		Controlling system
 	Operate on sets
 		Not loops
+		"I need to do this thing to this bunch of stuff" vs. "For each of the things I see, I need to do this thing to it"
 Basic query parts
 	select
 	from
