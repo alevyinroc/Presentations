@@ -1,11 +1,4 @@
 SQL 101 - your first query
-Database
-	a continer for one or more tables
-Table
-	Like Excel sheet - rows & columns
-	each row independent
-	Tables have relationships between them
-	Use this relationships in queries to connect data
 SQL
 	Standardized language
 	Every vendor has its own dialect but in general moving between isn't onerous
@@ -19,12 +12,24 @@ Different from other programming languages
 		Tell the engine *what* you want
 		Engine figures out the *how*
 	Same language describes:
+		Creating/managing the database as a whole
+		Describing the data (schema)
 		Manipulating data
 		Storing data
-		Controlling system
+		Controlling/programming system
 	Operate on sets
 		Not loops
 		"I need to do this thing to this bunch of stuff" vs. "For each of the things I see, I need to do this thing to it"
+Database
+	a continer for one or more tables
+Table
+	Like Excel sheet - rows & columns
+	each row independent
+	Tables have relationships between them
+	Use this relationships in queries to connect data
+Exploring tables and relationships
+	sp_help
+	foreign keys
 Basic query parts
 	select
 	from
