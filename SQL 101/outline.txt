@@ -23,8 +23,7 @@ Different from other programming languages
 	Same language describes:
 		Creating/managing the database as a whole
 		Describing the data (schema)
-		Manipulating data
-		Storing data
+		Storing and manipulating data
 		Controlling/programming system
 	Operate on sets
 		Not loops
@@ -33,7 +32,7 @@ Database
 	a continer for one or more tables
 Table
 	Like Excel sheet - rows & columns
-	each row independent
+	Each row independent
 	Tables have relationships between them
 	Use this relationships in queries to connect data
 Exploring tables and relationships
