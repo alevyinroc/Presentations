@@ -6,11 +6,20 @@ SQL
 	English-like - queries are generally readable even w/o a deep understanding of the language
 Different from other programming languages
 	Declarative vs. imperative
-	Imperative:
+	Imperative/procedural:
 		You dictate the how *and* what
+			Get a stock pot out of the cabinet
+			Fill with 4 quarts of water
+			For each of these veggies (carrots, celery, onion)
+				Go to fridge
+				Get the veggie
+				Bring to the counter
+				Chop
+				Put in the stock pot
 	Declarative:
 		Tell the engine *what* you want
-		Engine figures out the *how*
+		Engine figures out the *how* to get there
+			Put chopped carrots, celery and onion into a stock pot with 4 quarts of water. You'll find all three in the fridge, and the pot is in the cabinet by the sink.
 	Same language describes:
 		Creating/managing the database as a whole
 		Describing the data (schema)
@@ -28,7 +37,7 @@ Table
 	Tables have relationships between them
 	Use this relationships in queries to connect data
 Exploring tables and relationships
-	sp_help
+	sp_help - your best friend getting started
 	foreign keys
 Basic query parts
 	select
