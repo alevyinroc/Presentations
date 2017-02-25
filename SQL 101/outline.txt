@@ -28,6 +28,7 @@ Different from other programming languages
 	Operate on sets
 		Not loops
 		"I need to do this thing to this bunch of stuff" vs. "For each of the things I see, I need to do this thing to it"
+		RBAR
 Database
 	a continer for one or more tables
 Table
@@ -62,5 +63,8 @@ Selectivity
 		Example: query for one property vs. query all and then filter in Excel
 			It sounds like more work but it can actualy be less
 Joins
+	Inner
+	Outer
+		Left vs. Right
 	Cross product
 	index/where
