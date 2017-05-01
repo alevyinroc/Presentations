@@ -27,3 +27,16 @@ Accuracy & Speed
   * Still has to do all the work
   * Unless you specify an ORDER, you don't know what you'll get
  * NOLOCK is not a Turbo button!
+Talk to me!
+ * Talk to me about the type of data you're working with
+  * Good data type choices = more efficient
+ * Talk to me about the rules around your data
+  * Foreign key constraints
+  * Field constraints
+  * I don't trust your app to protect the integrity of the data
+ * Talk to me about how your application is querying the database
+  * Direct queries vs. stored procs vs. prepared statements
+ * Talk to me about how many databases you're going to need
+  * Multi-tenant - one DB per tenant vs. all tenants in one DB
+ * Don't wait for me to come looking for you when your query hammers the database
+ * Come to me with your queries and let's work through them together
