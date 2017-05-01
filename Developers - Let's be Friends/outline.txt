@@ -27,6 +27,7 @@ Accuracy & Speed
   * Still has to do all the work
   * Unless you specify an ORDER, you don't know what you'll get
  * NOLOCK is not a Turbo button!
+  * There are places it's OK to use. We can talk about it
 Talk to me!
  * Talk to me about the type of data you're working with
   * Good data type choices = more efficient
