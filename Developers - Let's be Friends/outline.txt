@@ -5,6 +5,10 @@
 
 You're developers, and I want us to be friends. But sometimes, you make it really difficult. Let's talk about that.
 
+What can I do for you?
+What can you do for me?
+
+
 Talk to me!
  * Talk to me about the type of data you're working with
   * Good data type choices = more efficient
