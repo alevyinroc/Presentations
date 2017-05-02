@@ -32,6 +32,7 @@ Inefficiencies
   * HME example - one property, copy/paste Excel vs. WHERE (20 seconds vs. sub-second)
   * SARGability
  * Give SQL Server every bit of information possible so that it can make a good decision
+  * The more SQL Server knows about your data, the less work it has to do
  * Solution: Know your indexes, know your data types, know your relationships
 Accuracy & Speed
  * DISTINCT is a code smell
@@ -41,3 +42,5 @@ Accuracy & Speed
   * Unless you specify an ORDER, you don't know what you'll get
  * NOLOCK is not a Turbo button!
   * There are places it's OK to use. We can talk about it
+ * Loops/cursors
+  * In most cases, if you find yourself saying "for each record I have here, I need to do X" you're probably wrong
