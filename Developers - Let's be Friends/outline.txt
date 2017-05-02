@@ -5,6 +5,19 @@
 
 You're developers, and I want us to be friends. But sometimes, you make it really difficult. Let's talk about that.
 
+Talk to me!
+ * Talk to me about the type of data you're working with
+  * Good data type choices = more efficient
+ * Talk to me about the rules around your data
+  * Foreign key constraints
+  * Field constraints
+  * I don't trust your app to protect the integrity of the data
+ * Talk to me about how your application is querying the database
+  * Direct queries vs. stored procs vs. prepared statements
+ * Talk to me about how many databases you're going to need
+  * Multi-tenant - one DB per tenant vs. all tenants in one DB
+ * Don't wait for me to come looking for you when your query hammers the database
+ * Come to me with your queries and let's work through them together
 Inefficiencies
  * Why do we care?
   * Memory's cheap, but SQL Server has memory limits on everything but Enterprise Edition
@@ -28,16 +41,3 @@ Accuracy & Speed
   * Unless you specify an ORDER, you don't know what you'll get
  * NOLOCK is not a Turbo button!
   * There are places it's OK to use. We can talk about it
-Talk to me!
- * Talk to me about the type of data you're working with
-  * Good data type choices = more efficient
- * Talk to me about the rules around your data
-  * Foreign key constraints
-  * Field constraints
-  * I don't trust your app to protect the integrity of the data
- * Talk to me about how your application is querying the database
-  * Direct queries vs. stored procs vs. prepared statements
- * Talk to me about how many databases you're going to need
-  * Multi-tenant - one DB per tenant vs. all tenants in one DB
- * Don't wait for me to come looking for you when your query hammers the database
- * Come to me with your queries and let's work through them together
