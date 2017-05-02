@@ -13,7 +13,13 @@ Talk to me!
   * Field constraints
   * I don't trust your app to protect the integrity of the data
  * Talk to me about how your application is querying the database
+  * Each time you run a query, SQL Server looks at your query, figures out a good enough way to run it, then caches that in memory
+   * If you change *anything*, it looks like a completely new query and it'll go through that process all over again
+   * A single space will double the RAM usage and burn CPU while recompiling
+   * From your application, different criteria in a plain string will stuff the plan cache
+   * Solution: Parameterized queries
   * Direct queries vs. stored procs vs. prepared statements
+  * Demo: impact on plan cache for each 
  * Talk to me about how many databases you're going to need
   * Multi-tenant - one DB per tenant vs. all tenants in one DB
  * Don't wait for me to come looking for you when your query hammers the database
@@ -22,11 +28,6 @@ Inefficiencies
  * Why do we care?
   * Memory's cheap, but SQL Server has memory limits on everything but Enterprise Edition
   * CPUs have *lots* of cores (up to 72), but again - licensing limits
- * Each time you run a query, SQL Server looks at your query, figures out a good enough way to run it, then caches that in memory
-   * If you change *anything*, it looks like a completely new query and it'll go through that process all over again
-   * A single space will double the RAM usage and burn CPU while recompiling
-   * From your application, different criteria in a plain string will stuff the plan cache
-   * Solution: Parameterized queries
  * Write a good WHERE clause
   * Don't filter in the app, be as specific as possible when telling SQL Server what you want
   * HME example - one property, copy/paste Excel vs. WHERE (20 seconds vs. sub-second)
@@ -44,3 +45,4 @@ Accuracy & Speed
   * There are places it's OK to use. We can talk about it
  * Loops/cursors
   * In most cases, if you find yourself saying "for each record I have here, I need to do X" you're probably wrong
+  * Demo: update with getdate() in loop vs. a set
