@@ -21,7 +21,8 @@ Talk to me!
    * If you change *anything*, it looks like a completely new query and it'll go through that process all over again
    * A single space will double the RAM usage and burn CPU while recompiling
    * From your application, different criteria in a plain string will stuff the plan cache
-   * Solution: Parameterized queries
+   * Solution: Parameterized queries at least. Preferably stored procedures 
+   * stored procedures will let us tune queries without having to update the application. Abstraction is helpful!
   * Direct queries vs. stored procs vs. prepared statements
   * Demo: impact on plan cache for each 
  * Talk to me about how many databases you're going to need
@@ -47,6 +48,8 @@ Accuracy & Speed
   * Unless you specify an ORDER, you don't know what you'll get
  * NOLOCK is not a Turbo button!
   * There are places it's OK to use. We can talk about it
+ * Don't sort data when it's being inserted. It doesn't matter 
+ * table variables vs. temp tables
  * Loops/cursors
   * In most cases, if you find yourself saying "for each record I have here, I need to do X" you're probably wrong
   * Demo: update with getdate() in loop vs. a set
