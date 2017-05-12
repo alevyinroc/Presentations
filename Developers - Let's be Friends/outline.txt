@@ -17,6 +17,7 @@ Talk to me!
  * Talk to me about how many databases you're going to need
   * Multi-tenant - one DB per tenant vs. all tenants in one DB
  * Don't wait for me to come looking for you when your query hammers the database
+ * Stored proc - include debug and verify modes
  * Come to me with your queries and let's work through them together
 Inefficiencies
  * Why do we care?
