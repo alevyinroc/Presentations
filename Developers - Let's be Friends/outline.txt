@@ -45,3 +45,4 @@ Accuracy & Speed
   * There are places it's OK to use. We can talk about it
  * Loops/cursors
   * In most cases, if you find yourself saying "for each record I have here, I need to do X" you're probably wrong
+  * They do have their place though. I have a 24" Crescent wrench in my garage and I don't use it all the time. But when I need it, I'm glad I've got it.
