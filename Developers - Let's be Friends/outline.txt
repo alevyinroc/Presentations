@@ -6,6 +6,10 @@
 You're developers, and I want us to be friends. But sometimes, you make it really difficult. Let's talk about that.
 
 Talk to me!
+ * This is a collaboration
+  * I don't want to blame the application code because "the system is slow"
+  * I don't want you to blame the database because "the system is slow"
+  * Instead, we'll both go after the network and SAN admins
  * Talk to me about the type of data you're working with
   * Good data type choices = more efficient
  * Talk to me about the rules around your data
