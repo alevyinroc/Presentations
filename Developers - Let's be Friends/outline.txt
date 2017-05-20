@@ -1,4 +1,4 @@
-﻿I'm a DBA. Which means that my most important jobs are:
+I'm a DBA. Which means that my most important jobs are:
  * To not spend all of the company's money to make up for inefficiencies
  * To make sure data is delivered accurately and quickly
  * To protect the integrity of the company's data
@@ -10,6 +10,10 @@ What can you do for me?
 
 
 Talk to me!
+ * This is a collaboration
+  * I don't want to blame the application code because "the system is slow"
+  * I don't want you to blame the database because "the system is slow"
+  * Instead, we'll both go after the network and SAN admins
  * Talk to me about the type of data you're working with
   * Good data type choices = more efficient
  * Talk to me about the rules around your data
@@ -28,6 +32,7 @@ Talk to me!
  * Talk to me about how many databases you're going to need
   * Multi-tenant - one DB per tenant vs. all tenants in one DB
  * Don't wait for me to come looking for you when your query hammers the database
+ * Stored proc - include debug and verify modes
  * Come to me with your queries and let's work through them together
 Inefficiencies
  * Why do we care?
@@ -53,3 +58,4 @@ Accuracy & Speed
  * Loops/cursors
   * In most cases, if you find yourself saying "for each record I have here, I need to do X" you're probably wrong
   * Demo: update with getdate() in loop vs. a set
+  * They do have their place though. I have a 24" Crescent wrench in my garage and I don't use it all the time. But when I need it, I'm glad I've got it.
