@@ -16,8 +16,15 @@ Talk to me!
   * Instead, we'll both go after the network and SAN admins
  * Talk to me about the type of data you're working with
   * Good data type choices = more efficient
+  * Store your dates as dates
+  * Store phone numbers & ZIP codes as strings
+  * Limit the size of text fields
  * Talk to me about the rules around your data
+  * Indexing criteria
+   * What are you frequently searching on?
+   * How often are you updating this data?
   * Foreign key constraints
+   * Helps everyone understand the relationships between the tables
   * Field constraints
   * I don't trust your app to protect the integrity of the data
  * Talk to me about how your application is querying the database
@@ -42,6 +49,7 @@ Inefficiencies
   * Don't filter in the app, be as specific as possible when telling SQL Server what you want
   * HME example - one property, copy/paste Excel vs. WHERE (20 seconds vs. sub-second)
   * SARGability
+  * We don't want to saturate or wait for the network
  * Give SQL Server every bit of information possible so that it can make a good decision
   * The more SQL Server knows about your data, the less work it has to do
  * Solution: Know your indexes, know your data types, know your relationships
