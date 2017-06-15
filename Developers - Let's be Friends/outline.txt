@@ -19,6 +19,8 @@ Talk to me!
   * Store your dates as dates
   * Store phone numbers & ZIP codes as strings
   * Limit the size of text fields
+  * If something is a number, store it as a number
+   * Scientific notation may not translate to a valid number type (out of bounds)
  * Talk to me about the rules around your data
   * Indexing criteria
    * What are you frequently searching on?
