@@ -10,9 +10,28 @@ What can you do for me?
 
 Talk to me!
  * This is a collaboration
+   * Don't wait for me to come looking for you when your query hammers the database
    * I don't want to blame the application code because "the system is slow"
    * I don't want you to blame the database because "the system is slow"
    * Instead, we'll both go after the network and SAN admins
+ * Talk to me about how many databases you're going to need
+   * Multi-tenant - one DB per tenant vs. all tenants in one DB
+     * One DB Per Tenant
+       * Convenient from a separation perspective
+       * OK for a few tenants
+       * But What about 100, 1000 or 5000?
+       * Schema changes, indexes, stored procs, plan guides, etc. have to be pushed to all databases at once
+       * Replication becomes a major headache
+       * Overhead becomes magnified
+          * Backups, CheckDB, Query Store
+          * Plan cache churn
+          * Checkout line example
+   * One DB
+     * Trickier security
+     * "Client key" fields
+     * Schema changes may still take a while
+      * But only have to be done once
+    * Can take better advantage of compression
   * Talk to me about the type of data you're working with
     * Good data type choices = more efficient
     * Store your dates as dates
@@ -37,25 +56,6 @@ Talk to me!
        * stored procedures will let us tune queries without having to update the application. Abstraction is helpful!
      * Direct queries vs. stored procs vs. prepared statements
      * Demo: impact on plan cache for each
- * Talk to me about how many databases you're going to need
-   * Multi-tenant - one DB per tenant vs. all tenants in one DB
-     * One DB Per Tenant
-       * Convenient from a separation perspective
-       * OK for a few tenants
-       * But What about 100, 1000 or 5000?
-       * Schema changes, indexes, stored procs, plan guides, etc. have to be pushed to all databases at once
-       * Replication becomes a major headache
-       * Overhead becomes magnified
-          * Backups, CheckDB, Query Store
-          * Plan cache churn
-          * Checkout line example
-   * One DB
-     * Trickier security
-     * "Client key" fields
-     * Schema changes may still take a while
-      * But only have to be done once
-    * Can take better advantage of compression
- * Don't wait for me to come looking for you when your query hammers the database
  * Stored proc - include debug and verify modes
  * Come to me with your queries and let's work through them together
 ## Inefficiencies
