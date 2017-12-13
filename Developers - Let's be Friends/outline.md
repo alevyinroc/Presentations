@@ -12,6 +12,7 @@ What can you do for me?
 * Connection Strings
 * Parameterized Queries
 * Stored Procedures
+  * Include a DEBUG mode
 
 ## Talk to me!
 
