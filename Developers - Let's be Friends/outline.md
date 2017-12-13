@@ -8,7 +8,13 @@ You're developers, and I want us to be friends. But sometimes, you make it reall
 What can I do for you?
 What can you do for me?
 
-Talk to me!
+## Basics
+* Connection Strings
+* Parameterized Queries
+* Stored Procedures
+
+## Talk to me!
+
  * This is a collaboration
    * Don't wait for me to come looking for you when your query hammers the database
    * I don't want to blame the application code because "the system is slow"
@@ -57,8 +63,10 @@ Talk to me!
      * Direct queries vs. stored procs vs. prepared statements
      * Demo: impact on plan cache for each
  * Stored proc - include debug and verify modes
- * Come to me with your queries and let's work through them together
+ * Come to me with your queries and let's work through them together 
+
 ## Inefficiencies
+
  * Why do we care?
    * Memory's cheap, but SQL Server has memory limits on everything but Enterprise Edition
    * CPUs have *lots* of cores (up to 72), but again - licensing limits
@@ -70,6 +78,7 @@ Talk to me!
  * Give SQL Server every bit of information possible so that it can make a good decision
    * The more SQL Server knows about your data, the less work it has to do
  * Solution: Know your indexes, know your data types, know your relationships
+
 ## Accuracy & Speed
  * DISTINCT is a code smell
    * Usually a bad/incomplete JOIN
@@ -84,3 +93,8 @@ Talk to me!
    * In most cases, if you find yourself saying "for each record I have here, I need to do X" you're probably wrong
    * Demo: update with getdate() in loop vs. a set
    * They do have their place though. I have a 24" Crescent wrench in my garage and I don't use it all the time. But when I need it, I'm glad I've got it.
+   * 
+
+## Style
+ * CTEs aren't a magic bullet
+ * Alias your table names wisely
