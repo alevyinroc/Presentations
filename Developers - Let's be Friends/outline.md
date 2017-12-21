@@ -10,9 +10,17 @@ What can you do for me?
 
 ## Basics
 * Connection Strings
+  * There are a lot of options available, use them!
+  * Especially `Application Name`
 * Parameterized Queries
+  * Safety (SQL injection)
+  * Performance
+    * Single compiled plan
 * Stored Procedures
   * Include a DEBUG mode
+* Disconnect as quickly as possible
+  * Are disconnected recordsets still a thing?
+  * I'd rather you pull 1000 records at once than 100 chunks 10 times over
 
 ## Talk to me!
 
@@ -75,6 +83,8 @@ What can you do for me?
    * Don't filter in the app, be as specific as possible when telling SQL Server what you want
    * HME example - one property, copy/paste Excel vs. WHERE (20 seconds vs. sub-second)
    * SARGability
+     * Functions in `WHERE` clause
+     * Why use UPPER() when the database is in a case-insensitive collation?
    * We don't want to saturate or wait for the network
  * Give SQL Server every bit of information possible so that it can make a good decision
    * The more SQL Server knows about your data, the less work it has to do
@@ -99,3 +109,7 @@ What can you do for me?
 ## Style
  * CTEs aren't a magic bullet
  * Alias your table names wisely
+ * Prefer temp tables over table variables
+   * Myth: Table variables are "only in memory"
+   * Truth: If large enough, they'll spill to disk anyway
+   * Temp tables, like anything else, are cached in memory anyway
