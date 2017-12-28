@@ -18,6 +18,8 @@ What can you do for me?
     * Single compiled plan
 * Stored Procedures
   * Include a DEBUG mode
+- Don’t query more than you need 
+	- pull all orders for a tiny scroll box that no one uses?
 * Disconnect as quickly as possible
   * Are disconnected recordsets still a thing?
   * I'd rather you pull 1000 records at once than 100 chunks 10 times over

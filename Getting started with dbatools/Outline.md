@@ -9,7 +9,7 @@
 
 ## Why not use `sqlserver` module?
 * `sqlserver` has decent stuff in it, but it's limited in scope and slower to update
-* dbatools updates almost daily
+* dbatools every couple days
 * dbatools has many more functions
 
 ## How to get it
