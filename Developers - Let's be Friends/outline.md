@@ -20,6 +20,8 @@ What can you do for me?
   * The more "correct" the data types are, the less likely bad data will be
   * Think of types as an additional constraint
     * Good data type choices = more efficient
+	    * Proper data types can be indexed better
+	    * varchar(ridiculous) can cause huge memory grants
     * Store your dates as dates
     * Store phone numbers & ZIP codes as strings
     * Limit the size of text fields
@@ -38,6 +40,7 @@ What can you do for me?
 * Give SQL Server every bit of information possible so that it can make a good decision
   * Goes back to data types
   * The more SQL Server knows about your data, the less work it has to do
+  * The right data type will be more efficient for space and processing time
 * Write a good `WHERE` clause
    * Don't filter in the app, be as specific as possible when telling SQL Server what you want
    * HME example - one property, copy/paste Excel vs. WHERE (20 seconds vs. sub-second)
@@ -47,13 +50,13 @@ What can you do for me?
 
 * CTEs aren't a magic bullet
   * Each time you reference a CTE, it's re-executed
+  * I just recently had this conversation with a very talented developer. 
   * Use a temp table instead!
 * Don't fear temp tables
 * Prefer temp tables over table variables
   * Myth: Table variables are "only in memory"
   * Truth: If large enough, they'll spill to disk anyway
   * Temp tables, like anything else, are cached in memory anyway
-* Don't use
 * Disconnect as quickly as possible
   * Are disconnected recordsets still a thing?
      * They are!
@@ -79,6 +82,7 @@ What can you do for me?
  * Alias your table names wisely
  * `SELECT * FROM...` is just lazy/sloppy. Know what you need to retrieve and retrieve it.
    * If your database and app server aren't co-located, the more data you send over the wire, the slower your application may feel.
+   * Back to memory efficiency and indexes with large data type
 
 ---
 
