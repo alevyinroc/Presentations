@@ -47,7 +47,7 @@ What I’m going to show you today how you can take what you’ve learned from a
 - Traceflags
 - Maintenance solution, first responder kit, sp_whoisactive
 	- schedule ola jobs 
-	- Update the above
+	- Update/install the above
 ##Routine tasks
 - Restart instance.
 	- If you give a server name all instances will be restarted at once
@@ -58,3 +58,10 @@ What I’m going to show you today how you can take what you’ve learned from a
 - Review error log
 
 # Contribute!
+- Github
+- Tutorials
+- What to do?
+	- Documentation
+	- Functions
+	- Bug fixes
+- Just one line

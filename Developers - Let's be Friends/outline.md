@@ -9,6 +9,9 @@ You're developers, and I want us to be friends. But sometimes, you make it reall
 What can I do for you?
 What can you do for me?
 
+## Basics
+* Come talk to me
+
 ## Safety & Accuracy
 * Parameterized Queries
   * Safety (SQL injection)
