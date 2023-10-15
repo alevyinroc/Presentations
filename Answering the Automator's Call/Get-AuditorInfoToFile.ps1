@@ -68,7 +68,7 @@ Write-Information -MessageData "Database restore tests";
 $BackupRestoreTests = Invoke-DbaQuery -SqlInstance $AllInstances -AppendServerInstance -Database DBAThings -Query "select SourceServer,TestServer,[Database],FileExists,Size,RestoreResult,DbccResult,RestoreStart,RestoreEnd,DbccStart,DbccEnd,BackupDates,BackupFiles from BackupTestResults" | Select-Object -Property *;
 
 Write-Information -MessageData "Export results";
-$ReportFileName = "c:\users\andy\Documents\AuditInfo $((get-date).ToString("yyyy-MM-dd HHmmss")).xlsx";
+$ReportFileName = "c:\temp\AuditInfo $((get-date).ToString("yyyy-MM-dd HHmmss")).xlsx";
 $PSDefaultParameterValues.Add('Export-Excel:Path', $ReportFileName);
 $PSDefaultParameterValues.Add('Export-Excel:AutoSize', $true);
 $PSDefaultParameterValues.Add('Export-Excel:AutoFilter', $true);
