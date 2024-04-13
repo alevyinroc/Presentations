@@ -95,7 +95,7 @@ $AllCheckDBs | Export-Excel -WorksheetName "CheckDB Job History";
 $BackupRestoreTests | Export-Excel -WorksheetName "Backup Restore Tests";
 Invoke-Item -Path $ReportFileName;
 New-BurntToastNotification `
-    -Text "Hello, SQL Saturday Boston!", "Audit export is complete" `
+    -Text "Hello, DBA Fundamentals!", "Audit export is complete" `
     -ExpirationTime (get-date).AddMinutes(10) `
     -AppLogo "c:\users\andy\onedrive\Social media profile pic 2023.jpeg";
 

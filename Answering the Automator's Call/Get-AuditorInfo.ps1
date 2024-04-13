@@ -47,8 +47,7 @@ Get-DbaComputerCertificate $AllInstances;
 
 # These have to be done in an elevated session because I'm looking at the local machine
 Get-DbaNetworkCertificate $AllInstances;
-Get-DbaForceNetworkEncryption $AllInstances |
-    Sort-Object -Property SqlInstance;
+Get-DbaForceNetworkEncryption $AllInstances;
 
 # Database Inventory
 Get-DbaDatabase -SqlInstance $AllInstances |
@@ -56,7 +55,7 @@ Get-DbaDatabase -SqlInstance $AllInstances |
     Sort-Object SqlInstance, Name;
 
 <#
-New-DbaDbCertificate -SqlInstance $AllInstances -Name "TDE_2023_2024" -Database master -Subject "Certificate for database master keys for TDE" -StartDate (get-date) -ExpirationDate (get-date).AddYears(1)
+New-DbaDbCertificate -SqlInstance $AllInstances -Name "TDE_2024_2025" -Database master -Subject "Certificate for database master keys for TDE" -StartDate (get-date) -ExpirationDate (get-date).AddYears(1)
 #>
 Get-DbaDbCertificate -Database master -SqlInstance $AllInstances |
     Where-Object { $PSItem.Name -notlike '##*' } |
