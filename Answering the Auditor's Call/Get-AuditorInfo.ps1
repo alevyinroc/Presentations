@@ -11,18 +11,18 @@ Scan types:
     Probe TCP ports
     Connect directly to SQL Server
 #>
-Find-DbaInstance -ScanType SQLService -ComputerName FLEXO;
+Find-DbaInstance -ScanType SQLService -ComputerName VADER;
 
 # I know I said we wouldn't talk about licensing...
-Get-DbaComputerSystem -ComputerName Flexo | 
+Get-DbaComputerSystem -ComputerName VADER | 
     Select-Object -Property ComputerName, NumberLogicalProcessors, TotalPhysicalMemory;
 
 # Collect registered servers
-Get-DbaRegisteredServer -SqlInstance flexo\sql19 -IncludeLocal -IncludeSelf | 
+Get-DbaRegisteredServer -SqlInstance VADER\sql22 -IncludeLocal -IncludeSelf | 
     Sort-Object Source | 
     Select-Object Name, ServerName, Source;
 
-$AllInstances = Get-DbaRegisteredServer -SqlInstance flexo\sql19 -IncludeSelf | Select-Object -ExpandProperty ServerName;
+$AllInstances = Get-DbaRegisteredServer -SqlInstance VADER\sql22 -IncludeSelf | Select-Object -ExpandProperty ServerName;
 
 # Collecting ErrorLog locations for your SIEM (security information and event management)
 Get-DbaDefaultPath -SqlInstance $AllInstances | 
@@ -127,9 +127,9 @@ Invoke-DbaQuery -SqlInstance $AllInstances -AppendServerInstance -Database DBAth
 
 # Backup tests?
 <#
-Test-DbaLastBackup -SqlInstance flexo\sql17 -EnableException | Write-DbaDataTable -SqlInstance flexo\sql17 -Database DBAThings -Table BackupTestResults -Schema dbo -AutoCreateTable -UseDynamicStringLength -EnableException;
-Test-DbaLastBackup -SqlInstance flexo\sql19 -EnableException | Write-DbaDataTable -SqlInstance flexo\sql19 -Database DBAThings -Table BackupTestResults -Schema dbo -AutoCreateTable -UseDynamicStringLength -EnableException;
-Test-DbaLastBackup -SqlInstance flexo\sql22 -EnableException | Write-DbaDataTable -SqlInstance flexo\sql22 -Database DBAThings -Table BackupTestResults -Schema dbo -AutoCreateTable -UseDynamicStringLength -EnableException;
+Test-DbaLastBackup -SqlInstance VADER\sql17 -EnableException | Write-DbaDataTable -SqlInstance VADER\sql17 -Database DBAThings -Table BackupTestResults -Schema dbo -AutoCreateTable -UseDynamicStringLength -EnableException;
+Test-DbaLastBackup -SqlInstance VADER\sql19 -EnableException | Write-DbaDataTable -SqlInstance VADER\sql19 -Database DBAThings -Table BackupTestResults -Schema dbo -AutoCreateTable -UseDynamicStringLength -EnableException;
+Test-DbaLastBackup -SqlInstance VADER\sql22 -EnableException | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Table BackupTestResults -Schema dbo -AutoCreateTable -UseDynamicStringLength -EnableException;
 #>
 Invoke-DbaQuery -SqlInstance $AllInstances -AppendServerInstance -Database DBAThings `
     -Query "select SourceServer,TestServer,[Database],FileExists,Size,RestoreResult,DbccResult,RestoreStart,RestoreEnd,DbccStart,DbccEnd,BackupDates,BackupFiles from BackupTestResults";

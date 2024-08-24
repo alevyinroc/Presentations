@@ -1,6 +1,6 @@
 import-module dbatools, importexcel, burnttoast;
 
-$AllInstances = Get-DbaRegisteredServer -SqlInstance flexo\sql19 -IncludeSelf | Select-Object -ExpandProperty ServerName;
+$AllInstances = Get-DbaRegisteredServer -SqlInstance VADER\sql19 -IncludeSelf | Select-Object -ExpandProperty ServerName;
 
 # Collecting ErrorLog locations for your SIEM (security information and event management)
 Write-Information -MessageData "Getting ErrorLog paths";
