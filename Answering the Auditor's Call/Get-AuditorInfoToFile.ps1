@@ -1,6 +1,11 @@
 import-module dbatools, importexcel, burnttoast;
-
-$AllInstances = Get-DbaRegisteredServer -SqlInstance VADER\sql19 -IncludeSelf | Select-Object -ExpandProperty ServerName;
+$PSDefaultParameterValues.Remove('Get-Dba*:SqlInstance');
+$PSDefaultParameterValues.Remove('Export-Excel:Path');
+$PSDefaultParameterValues.Remove('Export-Excel:AutoSize');
+$PSDefaultParameterValues.Remove('Export-Excel:AutoFilter');
+$PSDefaultParameterValues.Remove('Export-Excel:FreezeTopRow');
+$PSDefaultParameterValues.Remove('Select-Object:ExcludeProperty');
+$AllInstances = Get-DbaRegisteredServer -SqlInstance VADER\sql22 -IncludeSelf | Select-Object -ExpandProperty ServerName;
 
 # Collecting ErrorLog locations for your SIEM (security information and event management)
 Write-Information -MessageData "Getting ErrorLog paths";
@@ -65,7 +70,7 @@ $AllCheckDBs = Invoke-DbaQuery -SqlInstance $AllInstances -AppendServerInstance 
 
 # Backup tests?
 Write-Information -MessageData "Database restore tests";
-$BackupRestoreTests = Invoke-DbaQuery -SqlInstance $AllInstances -AppendServerInstance -Database DBAThings -Query "select SourceServer,TestServer,[Database],FileExists,Size,RestoreResult,DbccResult,RestoreStart,RestoreEnd,DbccStart,DbccEnd,BackupDates,BackupFiles from BackupTestResults" | Select-Object -Property *;
+$BackupRestoreTests = Invoke-DbaQuery -SqlInstance $AllInstances -AppendServerInstance -Database DBAThings -Query "select SourceServer,TestServer,[Database],FileExists,Size,RestoreResult,DbccResult,RestoreStart,RestoreEnd,DbccStart,DbccEnd,BackupDates,BackupFiles from BackupTestResults order by RestoreStart" | Select-Object -Property *;
 
 Write-Information -MessageData "Export results";
 $ReportFileName = "c:\temp\AuditInfo $((get-date).ToString("yyyy-MM-dd HHmmss")).xlsx";
@@ -95,9 +100,9 @@ $AllCheckDBs | Export-Excel -WorksheetName "CheckDB Job History";
 $BackupRestoreTests | Export-Excel -WorksheetName "Backup Restore Tests";
 Invoke-Item -Path $ReportFileName;
 New-BurntToastNotification `
-    -Text "Hello, DBA Fundamentals!", "Audit export is complete" `
+    -Text "Hello, SQL Saturday Syracuse!", "Audit export is complete" `
     -ExpirationTime (get-date).AddMinutes(10) `
-    -AppLogo "c:\users\andy\onedrive\Social media profile pic 2023.jpeg";
+    -AppLogo "c:\users\andyl\onedrive\Social media profile pic 2023.jpeg";
 
 $PSDefaultParameterValues.Remove('Get-Dba*:SqlInstance');
 $PSDefaultParameterValues.Remove('Export-Excel:Path');
