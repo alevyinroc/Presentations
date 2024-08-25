@@ -15,18 +15,21 @@ Find-DbaInstance -ScanType SQLService -ComputerName VADER;
 
 # I know I said we wouldn't talk about licensing...
 Get-DbaComputerSystem -ComputerName VADER | 
-    Select-Object -Property ComputerName, NumberLogicalProcessors, TotalPhysicalMemory;
+    Select-Object -Property ComputerName, NumberLogicalProcessors, TotalPhysicalMemory |
+    Format-Table -AutoSize;
 
 # Collect registered servers
 Get-DbaRegisteredServer -SqlInstance VADER\sql22 -IncludeLocal -IncludeSelf | 
     Sort-Object Source | 
-    Select-Object Name, ServerName, Source;
+    Select-Object Name, ServerName, Source |
+    Format-Table -AutoSize;
 
 $AllInstances = Get-DbaRegisteredServer -SqlInstance VADER\sql22 -IncludeSelf | Select-Object -ExpandProperty ServerName;
 
 # Collecting ErrorLog locations for your SIEM (security information and event management)
 Get-DbaDefaultPath -SqlInstance $AllInstances | 
-    Select-Object Computername, InstanceName, SqlInstance, ErrorLog;
+    Select-Object Computername, InstanceName, SqlInstance, ErrorLog |
+    Format-Table -AutoSize;
 
 # Check SQL Server patches
 Update-DbaBuildReference;
