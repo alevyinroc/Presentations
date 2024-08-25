@@ -33,11 +33,13 @@ Update-DbaBuildReference;
 
 Get-DbaBuild -SqlInstance $AllInstances |
     Select-Object SqlInstance, Build, NameLevel, SPLevel, CULevel, KBLevel, SupportedUntil |
-    Sort-Object -Property SqlInstance;
+    Sort-Object -Property SqlInstance |
+    Format-Table -AutoSize;
 
 Test-DbaBuild -SqlInstance $AllInstances -MaxBehind 1CU |
     Select-Object SqlInstance, Build, BuildTarget, NameLevel, SPLevel, SPTarget, CULevel, CUTarget, MaxBehind, Compliant, KBLevel, SupportedUntil |
-    Sort-Object -Property SqlInstance;
+    Sort-Object -Property SqlInstance |
+    Format-Table -AutoSize;
 
 # TLS connection encryption
 <#
@@ -52,7 +54,8 @@ Get-DbaForceNetworkEncryption $AllInstances;
 # Database Inventory
 Get-DbaDatabase -SqlInstance $AllInstances |
     Select-Object -Property SqlInstance, Name, Status, IsAccessible, Owner, SizeMB |
-    Sort-Object SqlInstance, Name;
+    Sort-Object SqlInstance, Name |
+    Format-Table -AutoSize;
 
 <#
 New-DbaDbCertificate -SqlInstance $AllInstances -Name "TDE_2024_2025" -Database master -Subject "Certificate for database master keys for TDE" -StartDate (get-date) -ExpirationDate (get-date).AddYears(1)
@@ -60,7 +63,8 @@ New-DbaDbCertificate -SqlInstance $AllInstances -Name "TDE_2024_2025" -Database 
 Get-DbaDbCertificate -Database master -SqlInstance $AllInstances |
     Where-Object { $PSItem.Name -notlike '##*' } |
     Select-Object -Property SqlInstance, Name, Subject, StartDate, ExpirationDate, LastBackupDate, PrivateKeyEncryptionType |
-    Sort-Object -Property SqlInstance, Name;
+    Sort-Object -Property SqlInstance, Name |
+    Format-Table -AutoSize;
 
 Get-DbaDatabase -SqlInstance $AllInstances |
     Select-Object -Property SqlInstance, Name, EncryptionEnabled, `
@@ -68,17 +72,21 @@ Get-DbaDatabase -SqlInstance $AllInstances |
         @{n = "EncryptionState"; e = { $_.DatabaseEncryptionKey.EncryptionState } }, `
         @{n = "EncryptionAlgorithm"; e = { $_.DatabaseEncryptionKey.EncryptionAlgorithm } }, `
         @{n = "EncryptorName"; e = { $_.DatabaseEncryptionKey.EncryptorName } } | 
-    Sort-Object -Property SqlInstance, Name;
+    Sort-Object -Property SqlInstance, Name |
+    Format-Table -AutoSize;
 
 Get-DbaLogin -SqlInstance $AllInstances | 
     Select-Object SqlInstance, Name, LoginType, CreateDate, LastLogin, HasAccess, IsLocked, IsDisabled | 
-    Sort-Object -Property SqlInstance, Name;
+    Sort-Object -Property SqlInstance, Name |
+    Format-Table -AutoSize;
 Get-DbaServerRole -SqlInstance $AllInstances | 
     Select-Object SqlInstance, Name, Owner, IsFixedRole | 
-    Sort-Object -Property SqlInstance, Name;
+    Sort-Object -Property SqlInstance, Name |
+    Format-Table -AutoSize;
 Get-DbaServerRoleMember -SqlInstance $AllInstances | 
     Select-Object -Property SqlInstance, Role, Name | 
-    Sort-Object -Property SqlInstance, Role, Name;
+    Sort-Object -Property SqlInstance, Role, Name |
+    Format-Table -AutoSize;
 
 # Find-DbaLoginInGroup
 
@@ -86,44 +94,53 @@ $PSDefaultParameterValues.Add('Get-Dba*:SqlInstance', $AllInstances);
 
 Get-DbaDbUser -ExcludeSystemUser | 
     Select-Object -Property SqlInstance, Database, Name, Login, LoginType, HasDbAccess, CreateDate, DateLastModified | 
-    Sort-object -Property SqlInstance, Database, Name;
+    Sort-object -Property SqlInstance, Database, Name |
+    Format-Table -AutoSize;
 Get-DbaDbRole -ExcludeFixedRole | 
     Select-Object -Property SqlInstance, Database, Name | 
-    Sort-Object -Property SqlInstance, Database, Name;
+    Sort-Object -Property SqlInstance, Database, Name |
+    Format-Table -AutoSize;
 Get-DbaDbRoleMember | 
     Select-Object -Property SqlInstance, Database, Role, UserName | 
-    Sort-Object -Property SqlInstance, Database, Role;
+    Sort-Object -Property SqlInstance, Database, Role |
+    Format-Table -AutoSize;
 
 Get-DbaPermission -IncludeServerLevel | 
-    Select-Object -Property SqlInstance, Database, Grantee, SecurableType, Securable, PermissionName, PermState -first 100| 
-    Sort-Object -Property SqlInstance, Database, Grantee, SecurableType, Securable, PermissionName;
+    Select-Object -Property SqlInstance, Database, Grantee, SecurableType, Securable, PermissionName, PermState -First 100| 
+    Sort-Object -Property SqlInstance, Database, Grantee, SecurableType, Securable, PermissionName |
+    Format-Table -AutoSize;
 
 
 # When was the last backup?
 Get-DbaLastBackup | 
     Select-Object -Property SqlInstance, Database, LastFullBackup, LastDiffBackup, LastLogBackup | 
-    Sort-Object -Property SqlInstance, Database;
+    Sort-Object -Property SqlInstance, Database |
+    Format-Table -AutoSize;
 
 # Two ways to get backup history
 # #1 - Get history from MSDB
 # This could take a minute
 Get-DbaDbBackupHistory | 
     Select-Object SqlInstance, Database, Type, Start, End -first 100 | 
-    Sort-Object -Property SqlInstance, Database, Start;
+    Sort-Object -Property SqlInstance, Database, Start |
+    Format-Table -AutoSize;
 
 # #2 - Get history from Ola's CommandLog table
 Invoke-DbaQuery -SqlInstance $AllInstances -AppendServerInstance -Database DBAthings `
     -Query "select DatabaseName,CommandType,StartTime,EndTime,ErrorNumber,ErrorMessage from CommandLog where CommandType like 'BACKUP_%';" | 
-    Sort-Object -Property ServerInstance, DatabaseName, StartTime;
+    Sort-Object -Property ServerInstance, DatabaseName, StartTime |
+    Format-Table -AutoSize;
 
 # Last time we did a DBCC CHECKDB?
 Get-DbaLastGoodCheckDb -ExcludeDatabase tempdb | 
     Select-Object -Property SqlInstance, Database, DatabaseCreated, LastGoodCheckDb, Status | 
-    Sort-Object -Property SqlInstance, Database;
+    Sort-Object -Property SqlInstance, Database |
+    Format-Table -AutoSize;
 
 Invoke-DbaQuery -SqlInstance $AllInstances -AppendServerInstance -Database DBAthings `
     -Query "select DatabaseName,CommandType,StartTime,EndTime,ErrorNumber,ErrorMessage from CommandLog where CommandType = 'DBCC_CHECKDB';" | 
-    Sort-Object -Property ServerInstance, DatabaseName, StartTime;
+    Sort-Object -Property ServerInstance, DatabaseName, StartTime |
+    Format-Table -AutoSize;
 
 # Backup tests?
 <#
@@ -132,6 +149,7 @@ Test-DbaLastBackup -SqlInstance VADER\sql19 -EnableException | Write-DbaDataTabl
 Test-DbaLastBackup -SqlInstance VADER\sql22 -EnableException | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Table BackupTestResults -Schema dbo -AutoCreateTable -UseDynamicStringLength -EnableException;
 #>
 Invoke-DbaQuery -SqlInstance $AllInstances -AppendServerInstance -Database DBAThings `
-    -Query "select SourceServer,TestServer,[Database],FileExists,Size,RestoreResult,DbccResult,RestoreStart,RestoreEnd,DbccStart,DbccEnd,BackupDates,BackupFiles from BackupTestResults";
+    -Query "select SourceServer,TestServer,[Database],FileExists,Size,RestoreResult,DbccResult,RestoreStart,RestoreEnd,DbccStart,DbccEnd,BackupDates,BackupFiles from BackupTestResults order by RestoreStart" |
+    Format-Table -AutoSize;
 
 $PSDefaultParameterValues.Remove('Get-Dba*:SqlInstance');
