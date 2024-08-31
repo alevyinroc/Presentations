@@ -1,4 +1,4 @@
-import-module dbatools, importexcel;
+import-module dbatools;
 
 Set-DbatoolsInsecureConnection -SessionOnly;
 
@@ -48,11 +48,12 @@ Test-DbaBuild -SqlInstance $AllInstances -MaxBehind 1CU |
 <#
     New-SelfSignedCertificate -type SSLServerAuthentication -Subject "CN=$env:COMPUTERNAME" -FriendlyName "SQLServer TLS Connections"-DnsName "$env:computername",'localhost' -CertStoreLocation "Cert:\LocalMachine\My" -KeyLength 2048 -KeyAlgorithm RSA -hash 'SHA256'
 #>
-Get-DbaComputerCertificate $AllInstances;
+Get-DbaComputerCertificate -SqlInstance $AllInstances |
+    Format-Table -AutoSize;
 
 # These have to be done in an elevated session because I'm looking at the local machine
-Get-DbaNetworkCertificate $AllInstances;
-Get-DbaForceNetworkEncryption $AllInstances;
+Get-DbaNetworkCertificate -SqlInstance $AllInstances;
+Get-DbaForceNetworkEncryption -SqlInstance $AllInstances;
 
 # Database Inventory
 Get-DbaDatabase -SqlInstance $AllInstances |
@@ -113,7 +114,6 @@ Get-DbaPermission -IncludeServerLevel |
     Sort-Object -Property SqlInstance, Database, Grantee, SecurableType, Securable, PermissionName |
     Format-Table -AutoSize;
 
-
 # When was the last backup?
 Get-DbaLastBackup | 
     Select-Object -Property SqlInstance, Database, LastFullBackup, LastDiffBackup, LastLogBackup | 
@@ -130,7 +130,7 @@ Get-DbaDbBackupHistory |
 
 # #2 - Get history from Ola's CommandLog table
 Invoke-DbaQuery -SqlInstance $AllInstances -AppendServerInstance -Database DBAthings `
-    -Query "select DatabaseName,CommandType,StartTime,EndTime,ErrorNumber,ErrorMessage from CommandLog where CommandType like 'BACKUP_%';" | 
+    -Query "select top 100 DatabaseName,CommandType,StartTime,EndTime,ErrorNumber,ErrorMessage from CommandLog where CommandType like 'BACKUP_%';" | 
     Sort-Object -Property ServerInstance, DatabaseName, StartTime |
     Format-Table -AutoSize;
 
@@ -141,7 +141,7 @@ Get-DbaLastGoodCheckDb -ExcludeDatabase tempdb |
     Format-Table -AutoSize;
 
 Invoke-DbaQuery -SqlInstance $AllInstances -AppendServerInstance -Database DBAthings `
-    -Query "select DatabaseName,CommandType,StartTime,EndTime,ErrorNumber,ErrorMessage from CommandLog where CommandType = 'DBCC_CHECKDB';" | 
+    -Query "select top 100 DatabaseName,CommandType,StartTime,EndTime,ErrorNumber,ErrorMessage from CommandLog where CommandType = 'DBCC_CHECKDB';" | 
     Sort-Object -Property ServerInstance, DatabaseName, StartTime |
     Format-Table -AutoSize;
 
