@@ -48,7 +48,7 @@ Test-DbaBuild -SqlInstance $AllInstances -MaxBehind 1CU |
 <#
     New-SelfSignedCertificate -type SSLServerAuthentication -Subject "CN=$env:COMPUTERNAME" -FriendlyName "SQLServer TLS Connections"-DnsName "$env:computername",'localhost' -CertStoreLocation "Cert:\LocalMachine\My" -KeyLength 2048 -KeyAlgorithm RSA -hash 'SHA256'
 #>
-Get-DbaComputerCertificate -SqlInstance $AllInstances |
+Get-DbaComputerCertificate -ComputerName $AllInstances |
     Format-Table -AutoSize;
 
 # These have to be done in an elevated session because I'm looking at the local machine
