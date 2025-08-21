@@ -9,12 +9,12 @@ $AllInstances = Get-DbaRegisteredServer -SqlInstance VADER\sql22 -IncludeSelf | 
 
 # Collecting ErrorLog locations for your SIEM (security information and event management)
 Write-Information -MessageData "Getting ErrorLog paths";
-$ErrorLogPaths = Get-DbaDefaultPath -SqlInstance $AllInstances | Select-Object Computername, InstanceName, SqlInstance, ErrorLog;
+$ErrorLogPaths = Get-DbaDefaultPath -SqlInstance $AllInstances | Select-Object -Property Computername, InstanceName, SqlInstance, ErrorLog;
 
 # Check SQL Server patches
 #Update-DbaBuildReference;
 Write-Information -MessageData "Checking patch levels";
-$CurrentPatchLevels = Test-DbaBuild -SqlInstance $AllInstances -MaxBehind 1CU | Select-Object SqlInstance, Build, BuildTarget, NameLevel, SPLevel, SPTarget, CULevel, CUTarget, MaxBehind, Compliant, KBLevel, SupportedUntil;
+$CurrentPatchLevels = Test-DbaBuild -SqlInstance $AllInstances -MaxBehind 1CU | Select-Object -Property SqlInstance, Build, BuildTarget, NameLevel, SPLevel, SPTarget, CULevel, CUTarget, MaxBehind, Compliant, KBLevel, SupportedUntil;
 
 # Database Inventory
 Write-Information -MessageData "Database Inventory";
@@ -26,10 +26,10 @@ $MasterDBCerts = Get-DbaDbCertificate -Database master -SqlInstance $AllInstance
 Write-Information -MessageData "Database Encryption";
 $DatabaseEncryption = Get-DbaDatabase -SqlInstance $AllInstances |
 Select-Object -Property SqlInstance, Name, EncryptionEnabled, `
-@{n = "EncryptionType"; e = { $_.DatabaseEncryptionKey.EncryptionType } }, `
-@{n = "EncryptionState"; e = { $_.DatabaseEncryptionKey.EncryptionState } }, `
-@{n = "EncryptionAlgorithm"; e = { $_.DatabaseEncryptionKey.EncryptionAlgorithm } }, `
-@{n = "EncryptorName"; e = { $_.DatabaseEncryptionKey.EncryptorName } } | Sort-Object -Property SqlInstance, Name;
+@{Name = "EncryptionType"; Expression = { $_.DatabaseEncryptionKey.EncryptionType } }, `
+@{Name = "EncryptionState"; Expression = { $_.DatabaseEncryptionKey.EncryptionState } }, `
+@{Name = "EncryptionAlgorithm"; Expression = { $_.DatabaseEncryptionKey.EncryptionAlgorithm } }, `
+@{Name = "EncryptorName"; Expression = { $_.DatabaseEncryptionKey.EncryptorName } } | Sort-Object -Property SqlInstance, Name;
 
 Write-Information -MessageData "Instance level security";
 $InstanceLogins = Get-DbaLogin -SqlInstance $AllInstances | Select-Object -Property SqlInstance, Name, LoginType, CreateDate, LastLogin, HasAccess, IsLocked, IsDisabled | Sort-Object -Property SqlInstance, Name;
@@ -40,7 +40,7 @@ $PSDefaultParameterValues.Add('Get-Dba*:SqlInstance', $AllInstances);
 $PSDefaultParameterValues.Add('Select-Object:ExcludeProperty', @("RowError", "RowState", "Table", "ItemArray", "HasErrors"));
 
 Write-Information -MessageData "Database level security";
-$DatabaseUsers = Get-DbaDbUser -ExcludeSystemUser | Select-Object -Property SqlInstance, Database, Name, Login, LoginType, HasDbAccess, CreateDate, DateLastModified | Sort-object -Property SqlInstance, Database, Name;
+$DatabaseUsers = Get-DbaDbUser -ExcludeSystemUser | Select-Object -Property SqlInstance, Database, Name, Login, LoginType, HasDbAccess, CreateDate, DateLastModified | Sort-Object -Property SqlInstance, Database, Name;
 $DatabaseRoles = Get-DbaDbRole -ExcludeFixedRole | Select-Object -Property SqlInstance, Database, Name | Sort-Object -Property SqlInstance, Database, Name;
 $DatabaseRoleMembers = Get-DbaDbRoleMember | Select-Object -Property SqlInstance, Database, Role, UserName | Sort-Object -Property SqlInstance, Database, Role;
 
@@ -72,6 +72,8 @@ $AllCheckDBs = Invoke-DbaQuery -SqlInstance $AllInstances -AppendServerInstance 
 Write-Information -MessageData "Database restore tests";
 $BackupRestoreTests = Invoke-DbaQuery -SqlInstance $AllInstances -AppendServerInstance -Database DBAThings -Query "select SourceServer,TestServer,[Database],FileExists,Size,RestoreResult,DbccResult,RestoreStart,RestoreEnd,DbccStart,DbccEnd,BackupDates,BackupFiles from BackupTestResults order by RestoreStart" | Select-Object -Property *;
 
+<# Run everything up to this point #>
+
 Write-Information -MessageData "Export results";
 $ReportFileName = "c:\temp\AuditInfo $((get-date).ToString("yyyy-MM-dd HHmmss")).xlsx";
 $PSDefaultParameterValues.Add('Export-Excel:Path', $ReportFileName);
@@ -100,7 +102,7 @@ $AllCheckDBs | Export-Excel -WorksheetName "CheckDB Job History";
 $BackupRestoreTests | Export-Excel -WorksheetName "Backup Restore Tests";
 Invoke-Item -Path $ReportFileName;
 New-BurntToastNotification `
-    -Text "Hello, SQL Saturday Syracuse!", "Audit export is complete" `
+    -Text "Hello, PASS Data Community Summit NYC!", "Audit export is complete" `
     -ExpirationTime (get-date).AddMinutes(10) `
     -AppLogo "c:\users\andyl\onedrive\Social media profile pic 2023.jpeg";
 
