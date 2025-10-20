@@ -69,47 +69,57 @@ Write-Information -MessageData "Database restore tests";
 $BackupRestoreTests = Invoke-DbaQuery -SqlInstance $AllInstances -AppendServerInstance -Database DBAThings -Query "select SourceServer,TestServer,[Database],FileExists,Size,RestoreResult,DbccResult,RestoreStart,RestoreEnd,DbccStart,DbccEnd,BackupDates,BackupFiles from BackupTestResults order by RestoreStart" | Select-Object -Property *;
 
 <# Run everything up to this point #>
-$CollectionDate = Get-Date -Date "2025-10-20" -Format "yyyy-MM-dd";
-# $CollectionDate = Get-Date -Format "yyyy-MM-dd";
-
-$AllInstances | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
-$ErrorLogPaths | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
-$CurrentPatchLevels | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
-$MasterDBCerts | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
-$DatabaseInventory | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
-$DatabaseEncryption | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
-$InstanceLogins | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
-$ServerRoles | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
-$ServerRoleMembers | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
-$DatabaseUsers | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
-$DatabaseRoles | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
-$DatabaseRoleMembers | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
-$AllPermissions | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
-$LastBackup | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
-$MSDBBackupHistory | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
-$BackupJobHistory | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
-$LastGoodCheckDB | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
-$AllCheckDBs | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
-$BackupRestoreTests | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
+$CollectionDate = Get-Date -Format "yyyy-MM-dd";
+$AddCollectionDateParams = @{
+    MemberType  = 'NoteProperty';
+    Name        = 'CollectionDate';
+    Value       = $CollectionDate;
+}
+$AllInstances | Add-Member @AddCollectionDateParams;
+$ErrorLogPaths | Add-Member @AddCollectionDateParams;
+$CurrentPatchLevels | Add-Member @AddCollectionDateParams;
+$MasterDBCerts | Add-Member @AddCollectionDateParams;
+$DatabaseInventory | Add-Member @AddCollectionDateParams;
+$DatabaseEncryption | Add-Member @AddCollectionDateParams;
+$InstanceLogins | Add-Member @AddCollectionDateParams;
+$ServerRoles | Add-Member @AddCollectionDateParams;
+$ServerRoleMembers | Add-Member @AddCollectionDateParams;
+$DatabaseUsers | Add-Member @AddCollectionDateParams;
+$DatabaseRoles | Add-Member @AddCollectionDateParams;
+$DatabaseRoleMembers | Add-Member @AddCollectionDateParams;
+$AllPermissions | Add-Member @AddCollectionDateParams;
+$LastBackup | Add-Member @AddCollectionDateParams;
+$MSDBBackupHistory | Add-Member @AddCollectionDateParams;
+$BackupJobHistory | Add-Member @AddCollectionDateParams;
+$LastGoodCheckDB | Add-Member @AddCollectionDateParams;
+$AllCheckDBs | Add-Member @AddCollectionDateParams;
+$BackupRestoreTests | Add-Member @AddCollectionDateParams;
 
 Write-Information -MessageData "Write results to database";
-$AllInstances | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table SQLInstances -AutoCreateTable -Confirm:$false;
-$ErrorLogPaths | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table ErrorLogPaths -AutoCreateTable -Confirm:$false;
-$CurrentPatchLevels | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table PatchLevels -AutoCreateTable -Confirm:$false;
-$MasterDBCerts | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table MasterDBCertificates -AutoCreateTable -Confirm:$false;
-$DatabaseInventory | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table DatabaseInventory -AutoCreateTable -Confirm:$false;
-$DatabaseEncryption | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table DatabaseEncryption -AutoCreateTable -Confirm:$false;
-$InstanceLogins | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table InstanceLogins -AutoCreateTable -Confirm:$false;
-$ServerRoles | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table ServerRoles -AutoCreateTable -Confirm:$false;
-$ServerRoleMembers | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table ServerRoleMembers -AutoCreateTable -Confirm:$false;
-$DatabaseUsers | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table DatabaseUsers -AutoCreateTable -Confirm:$false;
-$DatabaseRoles | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table DatabaseRoles -AutoCreateTable -Confirm:$false;
-$DatabaseRoleMembers | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table DatabaseRoleMembers -AutoCreateTable -Confirm:$false;
-$AllPermissions | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table AllPermissions -AutoCreateTable -Confirm:$false;
-$LastBackup | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table LastBackups -AutoCreateTable -Confirm:$false;
-$MSDBBackupHistory | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table MSDBBackupHistory -AutoCreateTable -Confirm:$false;
-$BackupJobHistory | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table BackupJobHistory -AutoCreateTable -Confirm:$false;
-$LastGoodCheckDB | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table LastGoodCheckDB -AutoCreateTable -Confirm:$false;
-$AllCheckDBs | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table AllCheckDBs -AutoCreateTable -Confirm:$false;
-$BackupRestoreTests | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table BackupRestoreTests -AutoCreateTable -Confirm:$false;
+$CommonWriteParams = @{
+    SqlInstance     = 'VADER\sql22'
+    Database        = 'DBAThings'
+    Schema          = 'Auditor'
+    AutoCreateTable = $true
+    Confirm         = $false
+};
+$AllInstances | Write-DbaDataTable @CommonWriteParams -Table SQLInstances;
+$ErrorLogPaths | Write-DbaDataTable @CommonWriteParams -Table ErrorLogPaths;
+$CurrentPatchLevels | Write-DbaDataTable @CommonWriteParams -Table PatchLevels;
+$MasterDBCerts | Write-DbaDataTable @CommonWriteParams -Table MasterDBCertificates;
+$DatabaseInventory | Write-DbaDataTable @CommonWriteParams -Table DatabaseInventory;
+$DatabaseEncryption | Write-DbaDataTable @CommonWriteParams -Table DatabaseEncryption;
+$InstanceLogins | Write-DbaDataTable @CommonWriteParams -Table InstanceLogins;
+$ServerRoles | Write-DbaDataTable @CommonWriteParams -Table ServerRoles;
+$ServerRoleMembers | Write-DbaDataTable @CommonWriteParams -Table ServerRoleMembers;
+$DatabaseUsers | Write-DbaDataTable @CommonWriteParams -Table DatabaseUsers;
+$DatabaseRoles | Write-DbaDataTable @CommonWriteParams -Table DatabaseRoles;
+$DatabaseRoleMembers | Write-DbaDataTable @CommonWriteParams -Table DatabaseRoleMembers;
+$AllPermissions | Write-DbaDataTable @CommonWriteParams -Table AllPermissions;
+$LastBackup | Write-DbaDataTable @CommonWriteParams -Table LastBackups;
+$MSDBBackupHistory | Write-DbaDataTable @CommonWriteParams -Table MSDBBackupHistory;
+$BackupJobHistory | Write-DbaDataTable @CommonWriteParams -Table BackupJobHistory;
+$LastGoodCheckDB | Write-DbaDataTable @CommonWriteParams -Table LastGoodCheckDB;
+$AllCheckDBs | Write-DbaDataTable @CommonWriteParams -Table AllCheckDBs;
+$BackupRestoreTests | Write-DbaDataTable @CommonWriteParams -Table BackupRestoreTests;
 Write-Information -MessageData "Done writing to database";
