@@ -1,3 +1,4 @@
+Set-DbatoolsInsecureConnection -SessionOnly;
 $AllInstances = Get-DbaRegisteredServer -SqlInstance VADER\sql22 -IncludeSelf | Select-Object -ExpandProperty ServerName;
 
 # Collecting ErrorLog locations for your SIEM (security information and event management)
@@ -29,6 +30,8 @@ $InstanceLogins = Get-DbaLogin -SqlInstance $AllInstances | Select-Object -Prope
 $ServerRoles = Get-DbaServerRole -SqlInstance $AllInstances | Select-Object -Property SqlInstance, Name, Owner, IsFixedRole | Sort-Object -Property SqlInstance, Name;
 $ServerRoleMembers = Get-DbaServerRoleMember -SqlInstance $AllInstances | Select-Object -Property SqlInstance, Role, Name | Sort-Object -Property SqlInstance, Role, Name;
 
+$PSDefaultParameterValues.Remove('Get-Dba*:SqlInstance');
+$PSDefaultParameterValues.Remove('Select-Object:ExcludeProperty');
 $PSDefaultParameterValues.Add('Get-Dba*:SqlInstance', $AllInstances);
 $PSDefaultParameterValues.Add('Select-Object:ExcludeProperty', @("RowError", "RowState", "Table", "ItemArray", "HasErrors"));
 
@@ -66,7 +69,8 @@ Write-Information -MessageData "Database restore tests";
 $BackupRestoreTests = Invoke-DbaQuery -SqlInstance $AllInstances -AppendServerInstance -Database DBAThings -Query "select SourceServer,TestServer,[Database],FileExists,Size,RestoreResult,DbccResult,RestoreStart,RestoreEnd,DbccStart,DbccEnd,BackupDates,BackupFiles from BackupTestResults order by RestoreStart" | Select-Object -Property *;
 
 <# Run everything up to this point #>
-$CollectionDate = Get-Date -Format "yyyy-MM-dd";
+$CollectionDate = Get-Date -Date "2025-10-20" -Format "yyyy-MM-dd";
+# $CollectionDate = Get-Date -Format "yyyy-MM-dd";
 
 $AllInstances | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
 $ErrorLogPaths | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
@@ -89,23 +93,23 @@ $AllCheckDBs | Add-Member -Name CollectionDate -Value $CollectionDate -MemberTyp
 $BackupRestoreTests | Add-Member -Name CollectionDate -Value $CollectionDate -MemberType NoteProperty;
 
 Write-Information -MessageData "Write results to database";
-$AllInstances | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_SQLInstances -AutoCreateTable -Confirm:$false;
-$ErrorLogPaths | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_ErrorLogPaths -AutoCreateTable -Confirm:$false;
-$CurrentPatchLevels | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_PatchLevels -AutoCreateTable -Confirm:$false;
-$MasterDBCerts | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_MasterDBCertificates -AutoCreateTable -Confirm:$false;
-$DatabaseInventory | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_DatabaseInventory -AutoCreateTable -Confirm:$false;
-$DatabaseEncryption | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_DatabaseEncryption -AutoCreateTable -Confirm:$false;
-$InstanceLogins | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_InstanceLogins -AutoCreateTable -Confirm:$false;
-$ServerRoles | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_ServerRoles -AutoCreateTable -Confirm:$false;
-$ServerRoleMembers | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_ServerRoleMembers -AutoCreateTable -Confirm:$false;
-$DatabaseUsers | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_DatabaseUsers -AutoCreateTable -Confirm:$false;
-$DatabaseRoles | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_DatabaseRoles -AutoCreateTable -Confirm:$false;
-$DatabaseRoleMembers | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_DatabaseRoleMembers -AutoCreateTable -Confirm:$false;
-$AllPermissions | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_AllPermissions -AutoCreateTable -Confirm:$false;
-$LastBackup | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_LastBackups -AutoCreateTable -Confirm:$false;
-$MSDBBackupHistory | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_MSDBBackupHistory -AutoCreateTable -Confirm:$false;
-$BackupJobHistory | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_BackupJobHistory -AutoCreateTable -Confirm:$false;
-$LastGoodCheckDB | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_LastGoodCheckDB -AutoCreateTable -Confirm:$false;
-$AllCheckDBs | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_AllCheckDBs -AutoCreateTable -Confirm:$false;
-$BackupRestoreTests | Write-DbaDataTable -SqlInstance VADER\sql22 -Database AuditorInfo -Table Auditor_BackupRestoreTests -AutoCreateTable -Confirm:$false;
+$AllInstances | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table SQLInstances -AutoCreateTable -Confirm:$false;
+$ErrorLogPaths | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table ErrorLogPaths -AutoCreateTable -Confirm:$false;
+$CurrentPatchLevels | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table PatchLevels -AutoCreateTable -Confirm:$false;
+$MasterDBCerts | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table MasterDBCertificates -AutoCreateTable -Confirm:$false;
+$DatabaseInventory | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table DatabaseInventory -AutoCreateTable -Confirm:$false;
+$DatabaseEncryption | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table DatabaseEncryption -AutoCreateTable -Confirm:$false;
+$InstanceLogins | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table InstanceLogins -AutoCreateTable -Confirm:$false;
+$ServerRoles | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table ServerRoles -AutoCreateTable -Confirm:$false;
+$ServerRoleMembers | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table ServerRoleMembers -AutoCreateTable -Confirm:$false;
+$DatabaseUsers | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table DatabaseUsers -AutoCreateTable -Confirm:$false;
+$DatabaseRoles | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table DatabaseRoles -AutoCreateTable -Confirm:$false;
+$DatabaseRoleMembers | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table DatabaseRoleMembers -AutoCreateTable -Confirm:$false;
+$AllPermissions | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table AllPermissions -AutoCreateTable -Confirm:$false;
+$LastBackup | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table LastBackups -AutoCreateTable -Confirm:$false;
+$MSDBBackupHistory | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table MSDBBackupHistory -AutoCreateTable -Confirm:$false;
+$BackupJobHistory | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table BackupJobHistory -AutoCreateTable -Confirm:$false;
+$LastGoodCheckDB | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table LastGoodCheckDB -AutoCreateTable -Confirm:$false;
+$AllCheckDBs | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table AllCheckDBs -AutoCreateTable -Confirm:$false;
+$BackupRestoreTests | Write-DbaDataTable -SqlInstance VADER\sql22 -Database DBAThings -Schema Auditor -Table BackupRestoreTests -AutoCreateTable -Confirm:$false;
 Write-Information -MessageData "Done writing to database";
