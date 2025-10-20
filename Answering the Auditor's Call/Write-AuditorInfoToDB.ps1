@@ -71,9 +71,9 @@ $BackupRestoreTests = Invoke-DbaQuery -SqlInstance $AllInstances -AppendServerIn
 <# Run everything up to this point #>
 $CollectionDate = Get-Date -Format "yyyy-MM-dd";
 $AddCollectionDateParams = @{
-    MemberType  = 'NoteProperty';
-    Name        = 'CollectionDate';
-    Value       = $CollectionDate;
+    MemberType = 'NoteProperty';
+    Name       = 'CollectionDate';
+    Value      = $CollectionDate;
 }
 $AllInstances | Add-Member @AddCollectionDateParams;
 $ErrorLogPaths | Add-Member @AddCollectionDateParams;
