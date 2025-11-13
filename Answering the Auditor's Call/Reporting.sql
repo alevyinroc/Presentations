@@ -16,11 +16,12 @@ where S.[name] = N'Auditor' and T.[name] = @TableName and c.name <> N'Collection
 
 declare @Sql nvarchar(max);
 
-set @Sql = N'select ' + @ColumnList + N' from [Auditor].' + quotename(@TableName) + N' where CollectionDate = @DateParam1
+set @Sql = N'select ''Added'' as [Status],' + @ColumnList + N' from [Auditor].' + quotename(@TableName) + N' where CollectionDate = @DateParam1
 EXCEPT
-select ' + @ColumnList + N' from [Auditor].' + quotename(@TableName) + N' where CollectionDate = @DateParam2;'
-
-select 'Added between ' + cast(@PreviousCollection as char(10)) + ' and ' + cast(@LatestCollection as char(10)) as [Reviewing];
+select ''Added'' as [Status],' + @ColumnList + N' from [Auditor].' + quotename(@TableName) + N' where CollectionDate = @DateParam2
+UNION ALL
+select ''Removed'' as [Status],' + @ColumnList + N' from [Auditor].' + quotename(@TableName) + N' where CollectionDate = @DateParam2
+EXCEPT
+select ''Removed'' as [Status],' + @ColumnList + N' from [Auditor].' + quotename(@TableName) + N' where CollectionDate = @DateParam1
+;'
 exec sp_executesql @sql, N'@DateParam1 date,@DateParam2 date', @LatestCollection,@PreviousCollection;
-select 'Removed between ' + cast(@PreviousCollection as char(10)) + ' and ' + cast(@LatestCollection as char(10)) as [Reviewing];
-exec sp_executesql @sql, N'@DateParam1 date,@DateParam2 date', @PreviousCollection,@LatestCollection;

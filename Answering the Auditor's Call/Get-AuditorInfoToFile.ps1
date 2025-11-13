@@ -102,7 +102,7 @@ $AllCheckDBs | Export-Excel -WorksheetName "CheckDB Job History";
 $BackupRestoreTests | Export-Excel -WorksheetName "Backup Restore Tests";
 Invoke-Item -Path $ReportFileName;
 New-BurntToastNotification `
-    -Text "Hello, PASS Data Community Summit NYC!", "Audit export is complete" `
+    -Text "Hello, PASS Data Community Summit!", "Audit export is complete" `
     -ExpirationTime (get-date).AddMinutes(10) `
     -AppLogo "c:\users\andyl\onedrive\Social media profile pic 2023.jpeg";
 
