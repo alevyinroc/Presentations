@@ -1,4 +1,10 @@
-import-module dbatools;
+if (Get-PSResource -Name dbatools) {
+    Update-PSResource -Name dbatools;
+}
+else {
+    Install-PSResource -Name dbatools -Scope CurrentUser;
+}
+Import-Module -Name dbatools;
 
 Set-DbatoolsInsecureConnection -SessionOnly;
 
@@ -32,7 +38,7 @@ Get-DbaDefaultPath -SqlInstance $AllInstances |
     Format-Table -AutoSize;
 
 # Check SQL Server patches
-Update-DbaBuildReference;
+Update-DbaBuildReference -Verbose;
 
 Get-DbaBuild -SqlInstance $AllInstances |
     Select-Object SqlInstance, Build, NameLevel, SPLevel, CULevel, KBLevel, SupportedUntil |
