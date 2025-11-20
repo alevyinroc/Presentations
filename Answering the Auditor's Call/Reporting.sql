@@ -9,7 +9,7 @@ select CollectionDate from Auditor.Patchlevels where CollectionDate < @LatestCol
 
 --select @PreviousCollection = greatest(dateadd(year, -1, getdate()),min(CollectionDate)) from Auditor.Patchlevels;
 
-select @previouscollection,@latestcollection
+--select @previouscollection,@latestcollection
 declare @TableName sysname
 set @TableName = N'DatabaseRoleMembers';
 --set @TableName = N'PatchLevels';
@@ -23,13 +23,13 @@ where S.[name] = N'Auditor' and T.[name] = @TableName and c.name <> N'Collection
 
 declare @Sql nvarchar(max);
 
-set @Sql = N'select ''Added'' as [Status],' + @ColumnList + N' from [Auditor].' + quotename(@TableName) + N' where CollectionDate = @DateParam1
+set @Sql = N'select * from (select ''Added'' as [Status],' + @ColumnList + N' from [Auditor].' + quotename(@TableName) + N' where CollectionDate = @DateParam1
 EXCEPT
 select ''Added'' as [Status],' + @ColumnList + N' from [Auditor].' + quotename(@TableName) + N' where CollectionDate = @DateParam2
 UNION ALL
 select ''Removed'' as [Status],' + @ColumnList + N' from [Auditor].' + quotename(@TableName) + N' where CollectionDate = @DateParam2
 EXCEPT
-select ''Removed'' as [Status],' + @ColumnList + N' from [Auditor].' + quotename(@TableName) + N' where CollectionDate = @DateParam1
+select ''Removed'' as [Status],' + @ColumnList + N' from [Auditor].' + quotename(@TableName) + N' where CollectionDate = @DateParam1) as [Results] order by [Status]
 ;'
 print @sql;
 exec sp_executesql @sql, N'@DateParam1 date,@DateParam2 date', @LatestCollection,@PreviousCollection;
