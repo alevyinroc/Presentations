@@ -9,6 +9,7 @@ select CollectionDate from Auditor.Patchlevels where CollectionDate < @LatestCol
 
 --select @PreviousCollection = greatest(dateadd(year, -1, getdate()),min(CollectionDate)) from Auditor.Patchlevels;
 
+select @previouscollection,@latestcollection
 declare @TableName sysname
 set @TableName = N'DatabaseRoleMembers';
 --set @TableName = N'PatchLevels';
