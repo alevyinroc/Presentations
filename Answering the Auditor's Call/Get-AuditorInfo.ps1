@@ -1,4 +1,10 @@
-import-module dbatools;
+if (Get-PSResource -Name dbatools) {
+    Update-PSResource -Name dbatools;
+}
+else {
+    Install-PSResource -Name dbatools -Scope CurrentUser;
+}
+Import-Module -Name dbatools;
 
 Set-DbatoolsInsecureConnection -SessionOnly;
 
@@ -32,7 +38,7 @@ Get-DbaDefaultPath -SqlInstance $AllInstances |
     Format-Table -AutoSize;
 
 # Check SQL Server patches
-Update-DbaBuildReference;
+Update-DbaBuildReference -Verbose;
 
 Get-DbaBuild -SqlInstance $AllInstances |
     Select-Object SqlInstance, Build, NameLevel, SPLevel, CULevel, KBLevel, SupportedUntil |
@@ -130,7 +136,7 @@ Get-DbaDbBackupHistory |
 
 # #2 - Get history from Ola's CommandLog table
 Invoke-DbaQuery -SqlInstance $AllInstances -AppendServerInstance -Database DBAthings `
-    -Query "select top 100 DatabaseName,CommandType,StartTime,EndTime,ErrorNumber,ErrorMessage from CommandLog where CommandType like 'BACKUP_%';" | 
+    -Query "select top 100 DatabaseName,CommandType,StartTime,EndTime,ErrorNumber,ErrorMessage from CommandLog where CommandType like 'BACKUP_%' order by starttime,endtime;" | 
     Sort-Object -Property ServerInstance, DatabaseName, StartTime |
     Format-Table -AutoSize;
 
@@ -144,7 +150,7 @@ Start-DbaAgentJob -SqlInstance $AllInstances -Job 'DatabaseIntegrityCheck - USER
 Start-DbaAgentJob -SqlInstance $AllInstances -Job 'DatabaseIntegrityCheck - SYSTEM_DATABASES';
 
 Invoke-DbaQuery -SqlInstance $AllInstances -AppendServerInstance -Database DBAthings `
-    -Query "select top 100 DatabaseName,CommandType,StartTime,EndTime,ErrorNumber,ErrorMessage from CommandLog where CommandType = 'DBCC_CHECKDB';" | 
+    -Query "select top 100 DatabaseName,CommandType,StartTime,EndTime,ErrorNumber,ErrorMessage from CommandLog where CommandType = 'DBCC_CHECKDB' order by StartTime;" | 
     Sort-Object -Property ServerInstance, DatabaseName, StartTime |
     Format-Table -AutoSize;
 
