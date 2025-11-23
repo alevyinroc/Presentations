@@ -1,10 +1,11 @@
+use dbathings;
 declare @LatestCollection date;
 declare @PreviousCollection date;
 
 select @LatestCollection = max(CollectionDate) from auditor.PatchLevels;
 set @PreviousCollection =  (select top 1 CollectionDate from (
 select CollectionDate from Auditor.Patchlevels where CollectionDate < @LatestCollection) as PL order by CollectionDate desc);
---select @PreviousCollection = min(CollectionDate) from Auditor.Patchlevels;
+select @PreviousCollection = min(CollectionDate) from Auditor.Patchlevels;
 
 declare @DateParam1 date,@DateParam2 date;
 set @DateParam1 = @LatestCollection;
